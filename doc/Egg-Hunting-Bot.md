@@ -6,7 +6,8 @@ This documentation described the approaches of our "egg hunting behavior" (targe
 - Siqi Yan
 - Tiancheng(Tyler) Shen
 
-**Date of the Competition:** March 30th, 2017
+**Date of the Competition:**
+  March 30th, 2017
 
 # Overview
 This is the first attempt of the competition Egg Hunting within a Known Map. In this competition, our robot's general goal is to find virtual targets as many as it can during the competition. The virtual targets or eggs are represented by a certain type of AR Tag combination (Graph 1) or a University of Alberta emblem (Graph 2).
@@ -17,9 +18,22 @@ There are 5 targets in total in each round of competition. For a certain target,
 
 The competition has two rounds in total for each competing robot. Each round will last 5 minutes or until all the targets be found. Points that gain in two rounds will be cumulated into the final competition grade. The team with highest final competition grade wins the competition. Tie-breaking based on time of completion if all targets are found within five minutes in both runs.
 
-# Background/Motivation
-In order to win the competition, our robot will need to navigate itself to travel in the competition area with a pre-built map, and search for targets (AR codes and UA logos). Once a target is found, the robot will dock in front of the target and sound a unique beep to indicate it finds a target.
+The initial position and orientation of robots will be random pick by the judges at the beginning of each competition round. A pre-built map of competition environment will be allowed to use for robot's navigation.
 
+# Background/Motivation
+In order to make our robot as a competitive one during the competition, our robot will need to be able to perform in 4 separated tasks: localization, navigation, target searching, and docking.
+
+Localization will be critical for target searching especially in a non-closed environment and a unknown initial pose. A good localization could prevent a robot goes outside of competition area, and help robot program to record correct location information of each visited target. Both of those features will definitely help a robot saving a lot of time during the competition.
+
+Navigation gave us a chance to guide our robot in a high efficient target searching route specifically for this competition. It is guarantee that all the targets will be pasted at a certain height on a wall and within a certain area (four walls in the competition hall way). So, if we could keep a fixed distance from camera sensor to the target (or the wall) throughout the competition, the size of target detected by a camera frame will be fixed as well. If this is possible, we are able to improve our target searching algorithm by getting rid of iterations for searching multiple possible target size in each image frame that captured by camera sensor. That means, there exist a high efficient distance between camera sensor and the walls for target searching. The navigation is the key to guide our robot traveling in this high efficient route.
+
+Successful target searching algorithm will help robots to collect points in the competition. Mostly, a robot won't have a second chance to find the same target within 5 minutes due to the size of the competition area. Therefore, good target searching algorithm should be able to prevent missing targets, meanwhile, helps a robot to gain more points within the same time duration. The higher points a robot gains, the higher chance it could win the game.
+
+Docking procedure will make our robot gains 1 to 3 points depends on how the quality of docking. This points seem like not so important compare to the points for successfully find a target. However, in a very close game, those few points could make different between winning or losing.
+
+To add up to those four skills of our robot, it should also able to perform as a finite state machine. By doing this, those four different skills and/or algorithms are able to coordinate with each other by translating between those four major states when the conditions of a certain state met.
+
+To sum up, a good localization makes navigation possible, then makes target searching high efficiently. And, docking makes higher chance for winning. At the end, finite state machine makes those functions works all together.
 
 # Question/Hypothesis
 
