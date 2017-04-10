@@ -53,25 +53,31 @@ An ultrasonic sensor ([HY-SRF05](https://www.robot-electronics.co.uk/htm/srf05te
 Our turtlebot 2 is distributed by Clearpath Robotics. Referred to the [Kobuki User Guide](https://www.google.ca/url?sa=t&rct=j&q=&esrc=s&source=web&cd=9&ved=0ahUKEwjvhqLH1v_RAhVOw2MKHYAFAY4QFghCMAg&url=https%3A%2F%2Fdocs.google.com%2Fdocument%2Fexport%3Fformat%3Dpdf%26id%3D15k7UBnYY_GPmKzQCjzRGCW-4dIP7zl_R_7tWPLM0zKI&usg=AFQjCNFo0O5d312q_k2JDorv5Q0cIMiZ7A&bvm=bv.146094739,d.cGc&cad=rja), the maximum linear speed of our turtlebot is 0.7 m/s, and the maximum angular speed is 180 degree/s (about 3.14 radiance/s).
 
 # Method/Procedures/Approach
-We planned to start with four separated components since most implementations of the components are available online or is completed in prior course demonstration and/or competition. For example, the navigation by Gmapping and AMCL.
-
-Our program contains the following modules:
+As a big picture of our program designed, it should contains the following modules or components:
 - Localization
 - Navigation
 - Target detector
 - Docking controller
 - Main controller
 
-For docking procedure, we will need to obtain a pose of target when the robot is close enough to it. Then, a path of docking will be calculated based on this pose data. We used two algorithms for two different visual target pose detection, one for AR Tag and another for University of Alberta emblem.
+We planned to start with the first four separated components since most of their implementations are available online or is completed in prior course demonstration and/or competition. For example, the pose detection for docking and the navigation by Gmapping and AMCL.
 
-We use the [ar_track_alvar](http://wiki.ros.org/ar_track_alvar) package, which available from ROS, to do the AR Tag pose detection. And for the University of Alberta emblem, we implemented a features matching algorithms to match key points between the model emblem and an image frame. Once we got those matched key points, we calculate the pose data by using [solvePnP](http://docs.opencv.org/3.0-beta/modules/calib3d/doc/camera_calibration_and_3d_reconstruction.html#solvepnp) function in openCV.
+Localization details, parameters, etc.!!!!!!!!!!!!!!!!!!!
+
+Navigation parameters, etc.!!!!!!!!!!!!!!!!!!!!!!!!
+
+For docking procedure, we will need to obtain a pose of target when the robot is getting close enough to it. Then, a docking path will be calculated based on this pose data. We used two algorithms for two different visual target pose detection, one for AR Tag and another for University of Alberta emblem. specifically, we used the [ar_track_alvar](http://wiki.ros.org/ar_track_alvar) package, which available from ROS, to do the AR Tag pose detection. And for the University of Alberta emblem, we implemented a features matching algorithms (Fast key point detection and ORB descriptor) to match key points between the model emblem and an image frame. Once we got those matched key points, we calculate the pose data by using [solvePnP](http://docs.opencv.org/3.0-beta/modules/calib3d/doc/camera_calibration_and_3d_reconstruction.html#solvepnp) function in openCV.
+
+Once those individual components are working, a main controller has been used to receive data from components and make final decisions based on those data like a general in an army. The decisions it makes usually are state translating decisions.
+
+Altogether, our structure of program or system is shown in Graph 4.  
 
 # Results
 
 # Analysis/Discussion
 In the competition, our robot didn't performed correctly, specifically, it keep going between different checkpoints, and couldn't stop at the target.
 
-The problem for our robot is the communication between the main controller and the the navigation module, either the main controller failed to tell the navigation module to stop when it found a target, or the navigation module reject to stop for some reason (we didn't investigate the details because we plan to use another approach for the navigation module in the next competition). We designed the program in the way that the each module works independently, but we have difficulty to combine then together. Our main controller is written in a procedure way rather than state machine, which causes it becomes more and more complicated and harder to debug as we add more functionalities to it.
+The problem for our robot is the communication between the main controller and the the navigation module, either the main controller failed to tell the navigation module to stop when a target be found, or the navigation module reject to stop for some reason (we didn't investigate the details because we plan to use another approach for the navigation module in the next competition). We designed the program in the way that the each module works independently, but we have difficulty to combine then together. Our main controller is written in a procedure way rather than state machine, which causes it becomes more and more complicated and harder to debug as we add more functionalities to it.
 
 # Conclusions
 In this competition, our robot is able to detect both the AR codes and UA logos targets, and the docking works independently. And our robot can identify its position when it is placed at a random location within the map.
